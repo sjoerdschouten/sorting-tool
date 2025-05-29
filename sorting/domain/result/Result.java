@@ -1,4 +1,4 @@
-package sorting.domain;
+package sorting.domain.result;
 
 import java.io.Serializable;
 

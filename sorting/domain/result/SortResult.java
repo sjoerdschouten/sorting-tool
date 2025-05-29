@@ -1,4 +1,4 @@
-package sorting.domain;
+package sorting.domain.result;
 
 /**
  * SortResult interface, that is implements for different modes (long, line, word, ...).

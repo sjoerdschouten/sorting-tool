@@ -1,7 +1,7 @@
 package sorting.controller;
 
-import sorting.domain.LongSortResult;
-import sorting.domain.SortResult;
+import sorting.domain.result.LongSortResult;
+import sorting.domain.result.SortResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class LongSorter implements InputEvaluator {
     }
 
     @Override
-    public SortResult evaluate() {
+    public SortResult sort() {
         Collections.sort(longList);
         return new LongSortResult(longList.size(),
                 longList.stream()

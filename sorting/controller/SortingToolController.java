@@ -1,6 +1,6 @@
 package sorting.controller;
 
-import sorting.domain.Result;
+import sorting.domain.result.Result;
 import sorting.view.ConsolePrinter;
 
 import java.util.Scanner;
@@ -15,23 +15,22 @@ public class SortingToolController {
     private final InputEvaluator evaluator;
     private final ConsolePrinter consolePrinter;
 
-    public SortingToolController(Mode mode, ConsolePrinter consolePrinter) {
+
+    public SortingToolController(DataType dataType, SortingType sortingType, ConsolePrinter consolePrinter, Scanner scanner) {
         this.consolePrinter = consolePrinter;
-        Scanner scanner = new Scanner(System.in);
-        this.evaluator = switch (mode) {
-            case LONG -> new LongEvaluator(scanner);
-            case LINE -> new LineEvaluator(scanner);
-            case WORD -> new WordEvaluator(scanner);
+        this.evaluator = switch (dataType) {
+            case LONG -> new LongEvaluator(scanner, sortingType);
+            case LINE -> new LineEvaluator(scanner, sortingType);
+            case WORD -> new WordEvaluator(scanner, sortingType);
             case SORT_LONG -> new LongSorter(scanner);
         };
     }
-
     /**
      * entry point for the Sorting Tool.
      */
-    public void run() {
+    public void execute() {
         evaluator.readUserInput();
-        Result evaluationResult = evaluator.evaluate();
+        Result evaluationResult = evaluator.sort();
         consolePrinter.printObject(evaluationResult.getResult());
     }
 }

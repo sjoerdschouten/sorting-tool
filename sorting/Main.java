@@ -1,39 +1,34 @@
 package sorting;
 
-import sorting.controller.Mode;
+import sorting.controller.ArgumentParser;
+import sorting.controller.DataType;
 import sorting.controller.SortingToolController;
+import sorting.controller.SortingType;
 import sorting.view.ConsolePrinter;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Scanner;
 
 /**
  * main class for the sorting tool.
  */
 public class Main {
-    private static final String USAGE = "Usage: java SortingTool [-dataType long|line|word].";
-    private static final String DATA_OPTION = "-dataType";
-
     public static void main(final String[] args) {
-        new SortingToolController(getMode(args), new ConsolePrinter()).run();
-    }
+        try {
+            Scanner scanner = new Scanner(System.in);
+            ArgumentParser argumentParser = new ArgumentParser();
+            argumentParser.parseArgs(args);
 
-    static Mode getMode(String[] args) {
-        if (args.length == 0) {
-            return Mode.WORD;
+            DataType dataType = argumentParser.getDataType();
+            SortingType sortingType = argumentParser.getSortingType();
+
+            new SortingToolController(
+                    dataType,
+                    sortingType,
+                    new ConsolePrinter(),
+                    scanner)
+                    .execute();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid input: " + e.getMessage());
         }
-        List<String> argList = Arrays.asList(args);
-        if (argList.contains("-sortIntegers")) {
-            return Mode.SORT_LONG;
-        }
-        if (!argList.contains(DATA_OPTION) || argList.indexOf(DATA_OPTION) >= argList.size() - 1) {
-            throw new IllegalStateException(USAGE);
-        }
-        return switch (args[argList.indexOf(DATA_OPTION) + 1]) {
-            case "long" -> Mode.LONG;
-            case "line" -> Mode.LINE;
-            case "word" -> Mode.WORD;
-            default -> throw new IllegalStateException(USAGE);
-        };
     }
 }
